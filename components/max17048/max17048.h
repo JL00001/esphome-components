@@ -28,9 +28,13 @@ namespace esphome
             {
                 this->battery_soc_rate_sensor_ = battery_soc_rate_sensor;
             }
-            void set_config_sensor(sensor::Sensor *battery_config_sensor)
+            void set_config_sensor(sensor::Sensor *config_sensor)
             {
                 this->config_ = config;
+            }
+            void set_version_sensor(sensor::Sensor *version_sensor)
+            {
+                this->version_ = config;
             }
 
         protected:
@@ -38,6 +42,7 @@ namespace esphome
             sensor::Sensor *battery_soc_sensor_;
             sensor::Sensor *battery_soc_rate_sensor_;
             sensor::Sensor *config_;
+            sensor::Sensor *version_;
         };
     } // namespace max17048
 } // namespace esphome
