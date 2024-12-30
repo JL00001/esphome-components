@@ -5,6 +5,7 @@ from esphome.const import (
     CONF_BATTERY_LEVEL,
     CONF_BATTERY_VOLTAGE,
     CONF_RATE,
+    CONF_CONF,
     CONF_ID,
     DEVICE_CLASS_BATTERY,
     UNIT_HOUR,
@@ -44,6 +45,12 @@ CONFIG_SCHEMA = (
                 accuracy_decimals=1,  # Actual Resolution: 0.208%/hr
                 device_class=DEVICE_CLASS_BATTERY,
                 state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional(CONF_CONF): sensor.sensor_schema(
+                unit_of_measurement=f"HEX",
+                accuracy_decimals=1,  # Actual Resolution: 0.208%/hr
+                device_class=DEVICE_CLASS_BATTERY,
+                state_class=STATE_CLASS_MEASUREMENT,
             )
         }
     )
@@ -69,3 +76,7 @@ async def to_code(config):
     if CONF_RATE in config:
         battery_soc_rate_sensor = await sensor.new_sensor(config[CONF_RATE])
         cg.add(var.set_battery_soc_rate_sensor(battery_soc_rate_sensor))
+
+    if CONF_CONF in config:
+        config_sensor = await sensor.new_sensor(config[CONF_CONF])
+        cg.add(var.set_config_sensor(config_sensor))
