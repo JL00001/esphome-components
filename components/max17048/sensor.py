@@ -50,11 +50,11 @@ CONFIG_SCHEMA = (
             cv.Optional(CONF_CONFIGURATION): sensor.sensor_schema(
                 unit_of_measurement=f"0x",
                 accuracy_decimals=1,
-                device_class=DEVICE_CLASS_NONE,
+                device_class=DEVICE_CLASS_BATTERY,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional(CONF_VERSION): sensor.sensor_schema(
-                unit_of_measurement=f"Rev",
+                unit_of_measurement=UNIT_PERCENT,
                 accuracy_decimals=1,
                 device_class=DEVICE_CLASS_NONE,
                 state_class=STATE_CLASS_MEASUREMENT,
