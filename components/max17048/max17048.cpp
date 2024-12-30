@@ -103,6 +103,16 @@ namespace esphome
 //                this->alrt->publish_state(config_union.alrt);
 //                this->athd->publish_state(config_union.athd);
             }
+            if (this->version_sensor_ != nullptr)
+            {
+                if (!read_byte_16(REG_VERSION, &raw_reading))
+                {
+                    ESP_LOGW(TAG, "'%s' - unable to read version register", this->name_.c_str());
+                    return;
+                }
+                int16_t version = raw_reading;
+                this->version_->publish_state(version);
+            }
         }
 
     } // namespace max17048
