@@ -72,6 +72,34 @@ namespace esphome
                 float soc_rate = (float)(int16_t)raw_reading * 0.208; // Current rate lsb is 0.208%/hr per data sheet
                 this->battery_soc_rate_sensor_->publish_state(soc_rate);
             }
+            //Read Config Reg
+            if (this->config_ != nullptr)
+            {
+                if (!read_byte_16(REG_CONFIG, &raw_reading))
+                {
+                    ESP_LOGW(TAG, "'%s' - unable to read config register", this->name_.c_str());
+                    return;
+                }
+                struct config_struct 
+                {
+                    uint8_t rcomp;                                           // An 8-bit value that can be adjusted to optimize IC performance for different lithium chemistries or different operating temperatures
+                    uint1_t sleep;                                           // IC in or out of sleep mode
+                    uint1_t alsc;                                            // State Of Charge (SOC) change alert enable
+                    uint1_t alrt;                                            // Alert Status Bit
+                    unit5_t athd;                                            // Alert Threshold for Low State Of Charge (SOC)
+                };
+                union config_union
+                {
+                    config_struct config;
+                    uint16_t raw;
+                };
+                config_union.raw = raw_reading;
+                this->rcomp->publish_state(config_union.rcomp);
+                this->sleep->publish_state(config_union.sleep);
+                this->alsc->publish_state(config_union.alsc);
+                this->alrt->publish_state(config_union.alrt);
+                this->athd->publish_state(config_union.athd);
+            }
         }
 
     } // namespace max17048
