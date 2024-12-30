@@ -7,6 +7,7 @@ from esphome.const import (
     CONF_RATE,
     CONF_CONF,
     CONF_ID,
+    CONF_VERSON,
     DEVICE_CLASS_BATTERY,
     UNIT_HOUR,
     UNIT_PERCENT,
@@ -47,9 +48,15 @@ CONFIG_SCHEMA = (
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional(CONF_CONF): sensor.sensor_schema(
-                unit_of_measurement=f"HEX",
-                accuracy_decimals=1,  # Actual Resolution: 0.208%/hr
-                device_class=DEVICE_CLASS_BATTERY,
+                unit_of_measurement=f"0x",
+                accuracy_decimals=1,
+                device_class=DEVICE_CLASS_NONE,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional(CONF_VERSON): sensor.sensor_schema(
+                unit_of_measurement=f"Rev",
+                accuracy_decimals=1,
+                device_class=DEVICE_CLASS_NONE,
                 state_class=STATE_CLASS_MEASUREMENT,
             )
         }
@@ -80,3 +87,7 @@ async def to_code(config):
     if CONF_CONF in config:
         config_sensor = await sensor.new_sensor(config[CONF_CONF])
         cg.add(var.set_config_sensor(config_sensor))
+
+    if CONF_VERSON in config:
+        verson_sensor = await sensor.new_sensor(config[CONF_VERSON])
+        cg.add(var.set_verson_sensor(verson_sensor))
