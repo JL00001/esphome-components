@@ -34,7 +34,7 @@ namespace esphome
             }
             void set_version_sensor(sensor::Sensor *version_sensor)
             {
-                this->version_ = config;
+                this->version_ = version;
             }
 
         protected:
